@@ -1,7 +1,5 @@
 <launch>
 
-  <arg name="use_ros_control" default="false" />
-
   <!-- loads moveit_controller_manager on the parameter server which is taken as argument
     if no argument is passed, moveit_simple_controller_manager will be set -->
   <arg name="moveit_controller_manager" default="moveit_simple_controller_manager/MoveItSimpleControllerManager" />
@@ -34,27 +32,25 @@
   <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> -->
 
   <!-- urdriver -->
-  <group unless="$(arg use_ros_control)">
-    <rosparam file="$(find picknik_ur5_moveit_config)/config/controllers.yaml"/>
-    <node name="ur_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
-    <!-- copy the specified IP address to be consistant with ROS-Industrial spec. -->
-      <param name="prefix" type="str" value="$(arg prefix)" />
-      <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
-      <param name="min_payload" type="double" value="$(arg min_payload)" />
-      <param name="max_payload" type="double" value="$(arg max_payload)" />
-      <param name="max_velocity" type="double" value="$(arg max_velocity)" />
-      <param name="servoj_time" type="double" value="$(arg servoj_time)" />
-      <param name="base_frame" type="str" value="$(arg base_frame)"/>
-      <param name="tool_frame" type="str" value="$(arg tool_frame)"/>
-      <param name="require_activation" type="str" value="$(arg require_activation)" />
-      <param name="shutdown_on_disconnect" type="bool" value="$(arg shutdown_on_disconnect)"/>
+  <rosparam file="$(find picknik_ur5_moveit_config)/config/controllers.yaml"/>
+  <node name="ur_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
+  <!-- copy the specified IP address to be consistant with ROS-Industrial spec. -->
+    <param name="prefix" type="str" value="$(arg prefix)" />
+    <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+    <param name="min_payload" type="double" value="$(arg min_payload)" />
+    <param name="max_payload" type="double" value="$(arg max_payload)" />
+    <param name="max_velocity" type="double" value="$(arg max_velocity)" />
+    <param name="servoj_time" type="double" value="$(arg servoj_time)" />
+    <param name="base_frame" type="str" value="$(arg base_frame)"/>
+    <param name="tool_frame" type="str" value="$(arg tool_frame)"/>
+    <param name="require_activation" type="str" value="$(arg require_activation)" />
+    <param name="shutdown_on_disconnect" type="bool" value="$(arg shutdown_on_disconnect)"/>
 
-      <!-- TODO(v4hn):
-      lowbandwidth controller could execute trajectories smoother,
-      but does not work sufficiently well yet:
-      https://github.com/ros-industrial/ur_modern_driver/issues/237
-      -->
-      <param name="use_lowbandwidth_trajectory_follower" value="false"/>
-    </node>
-  </group>
+    <!-- TODO(v4hn):
+    lowbandwidth controller could execute trajectories smoother,
+    but does not work sufficiently well yet:
+    https://github.com/ros-industrial/ur_modern_driver/issues/237
+    -->
+    <param name="use_lowbandwidth_trajectory_follower" value="false"/>
+  </node>
 </launch>
