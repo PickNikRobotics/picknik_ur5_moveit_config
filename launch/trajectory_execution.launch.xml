@@ -1,5 +1,4 @@
 <launch>
-  <arg name="robot_ip" default="127.0.1.1"/>
 
   <!-- This file makes it easy to include the settings for trajectory execution  -->
 
@@ -16,7 +15,6 @@
 
   <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
   <arg name="moveit_controller_manager" default="ur5" />
-  <include file="$(find picknik_ur5_moveit_config)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml" >
-    <arg name="robot_ip" value="$(arg robot_ip)"/>
-  </include>
+  <include file="$(find picknik_ur5_moveit_config)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml" />
+
 </launch>
