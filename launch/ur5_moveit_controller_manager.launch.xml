@@ -22,7 +22,7 @@
   <arg name="prefix" default="" />
   <arg name="servoj_time" default="0.008" />
   <arg name="base_frame" default="$(arg prefix)base" />
-  <arg name="tool_frame" default="$(arg prefix)tool_center_point_controller" />
+  <arg name="tool_frame" default="$(arg prefix)tool0_controller" />
   <arg name="shutdown_on_disconnect" default="true" />
 
   <!-- require_activation defines when the service /ur_driver/robot_enable needs to be called. -->
