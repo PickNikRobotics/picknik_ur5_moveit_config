@@ -2,7 +2,7 @@
 <launch>
   <arg name="paused" default="false"/>
   <arg name="gazebo_gui" default="true"/>
-  <arg name="urdf_path" default="$(find ur5_moveit_simple)/urdf/ur5_on_table.urdf.xacro"/>
+  <arg name="urdf_path" default="$(find picknik_ur5_moveit_config)/urdf/ur5_on_table.urdf.xacro"/>
 
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
