@@ -1,6 +1,6 @@
 moveit_setup_assistant_config:
   URDF:
-    package: ur5_moveit_simple
+    package: picknik_ur5_moveit_config
     relative_path: urdf/ur5_on_table.urdf.xacro
     xacro_args: ""
   SRDF:
