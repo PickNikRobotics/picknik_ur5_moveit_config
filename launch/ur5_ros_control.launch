@@ -20,6 +20,8 @@
   <arg name="controllers" default="joint_state_controller force_torque_sensor_controller vel_based_pos_traj_controller"/>
   <arg name="stopped_controllers" default="pos_based_pos_traj_controller joint_group_vel_controller"/>
   <arg name="load_description" default="true"/>
+  <arg name="simulate_robotiq" default="true"/>
+
   <group if="$(arg load_description)" >
     <!-- robot model -->
     <!-- <include file="$(find ur_description)/launch/ur5_upload.launch"> -->
@@ -31,6 +33,28 @@
 
     <!-- Convert joint states to /tf tranforms -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  </group>
+
+  <!-- ========================= -->
+  <!-- Robotiq 2F-85mm -->
+  <!-- ========================= -->
+
+  <!-- With simulation -->
+  <group if="$(arg simulate_robotiq)">
+
+    <!-- Load SIMULATION hardware interface -->
+    <node name="robotiq_hw_interface" pkg="moveit_sim_controller" respawn="false"
+          type="moveit_sim_hw_main" output="screen"/>
+
+    <!-- Load controller manager -->
+    <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager"
+          respawn="false" output="screen" args="spawn joint_trajectory_controller
+                                                "/>
+  </group>
+
+  <group unless="$(arg simulate_robotiq)">
+      <node ns="simple_gripper" name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller joint_trajectory_controller"/>
+      <node ns="simple_gripper" name="simple_gripper_hw" pkg="robotiq_2f_hw_usb" type="robotiq_2f_hw_usb_node" respawn="false" output="screen"/>
   </group>
 
 

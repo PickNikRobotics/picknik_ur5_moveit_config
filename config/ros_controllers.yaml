@@ -11,6 +11,7 @@ hardware_interface:
      - wrist_1_joint
      - wrist_2_joint
      - wrist_3_joint
+     - robotiq_2f_85_right_driver_joint
 
 # Publish all joint states ----------------------------------
 joint_state_controller:
