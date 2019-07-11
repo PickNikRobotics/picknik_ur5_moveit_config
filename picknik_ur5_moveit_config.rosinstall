@@ -1,0 +1,18 @@
+# This file is intended for users who want to build MoveIt! from source.
+# Used with wstool, users can download source of all packages of MoveIt!.
+- git:
+    local-name: ur_modern_driver
+    uri: https://github.com/ros-industrial/ur_modern_driver.git
+    version: kinetic-devel
+
+- git:
+    uri: https://github.com/PickNikRobotics/robotiq.git
+    local-name: robotiq/robotiq
+    version: kinetic-devel
+
+# 2F-85 robotiq gripper
+- git:
+    uri: https://github.com/beta-robots/robotiq.git
+    local-name: robotiq/robotiq_2f_85
+    version: master
+
