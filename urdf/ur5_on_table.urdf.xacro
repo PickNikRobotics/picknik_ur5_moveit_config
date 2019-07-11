@@ -50,6 +50,14 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
   </joint> -->
 
+  <!-- tool center point -->
+  <link name="tool_center_point" />
+  <joint name="tool_center_point_joint" type="fixed">
+    <parent link="tool0"/>
+    <child link = "tool_center_point" />
+    <origin xyz="0.0 0.0 0.125" rpy="0.0 -1.5707 0.0" />
+  </joint>
+
   <link name="table">
     <visual>
       <geometry>

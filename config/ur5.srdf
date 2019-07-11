@@ -50,7 +50,7 @@
         <joint name="robotiq_2f_85_right_follower_joint" value="0" />
         <joint name="robotiq_2f_85_right_spring_link_joint" value="0" />
     </group_state>
-    <group_state name="close" group="gripper">
+    <group_state name="closed" group="gripper">
         <joint name="robotiq_2f_85_left_driver_joint" value="0" />
         <joint name="robotiq_2f_85_left_follower_joint" value="0" />
         <joint name="robotiq_2f_85_left_spring_link_joint" value="0" />
