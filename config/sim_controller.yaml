@@ -1,0 +1,20 @@
+# Simulation settings
+generic_hw_control_loop:
+  loop_hz: 125
+  cycle_time_error_threshold: 0.02
+
+# MoveIt-specific simulation settings
+moveit_sim_hw_interface:
+  joint_model_group: arm
+  joint_model_group_pose: ready  # initial pose
+
+# Settings for generic ros_control hardware interface
+hardware_interface:
+  sim_control_mode: 0 # position
+  joints:
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
