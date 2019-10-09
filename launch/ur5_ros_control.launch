@@ -6,10 +6,9 @@
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
 
-  <arg name="robot_ip" doc="IP of the controller" />
-  <arg name="reverse_ip" default="" doc="IP of the computer running the driver" />
+  <arg name="robot_ip" default="10.0.1.148" doc="IP of the controller" />
+  <arg name="reverse_ip" default="10.0.1.118" doc="IP of the computer running the driver" />
   <arg name="reverse_port" default="50001"/>
-  <arg name="limited" default="false"/>
   <arg name="min_payload"  default="0.0"/>
   <arg name="max_payload"  default="3.0"/>
   <arg name="prefix" default="" />
@@ -19,20 +18,26 @@
   <arg name="shutdown_on_disconnect" default="true" />
   <arg name="controllers" default="joint_state_controller force_torque_sensor_controller vel_based_pos_traj_controller"/>
   <arg name="stopped_controllers" default="pos_based_pos_traj_controller joint_group_vel_controller"/>
-  <arg name="load_description" default="true"/>
-  <group if="$(arg load_description)" >
-    <!-- robot model -->
-    <!-- <include file="$(find ur_description)/launch/ur5_upload.launch"> -->
-      <!-- <arg name="limited" value="$(arg limited)"/> -->
-    <!-- </include> -->
-    <include file="$(find picknik_ur5_moveit_config)/launch/planning_context.launch">
-      <arg name="load_robot_description" value="true"/>
-    </include>
 
-    <!-- Convert joint states to /tf tranforms -->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
-  </group>
-
+  <!-- Maybe remove -->
+  <arg name="kinematics_config" default="$(find picknik_ur5_moveit_config)/config/ur5_calibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>
+  <arg name="robot_description_file" default="$(find picknik_ur5_moveit_config)/launch/planning_context.launch" doc="Robot description launch file."/>
+  <arg name="load_robot_description" default="true"/>
+  <arg name="robot_description" default="robot_description"/>
+  <arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface" />
+  <arg name="limited" default="true" doc="Use the description in limited mode (Every axis rotates from -PI to PI)"/>
+  <!-- robot model -->
+  <include file="$(arg robot_description_file)">
+    <arg name="kinematics_config" value="$(arg kinematics_config)"/>
+    <arg name="load_robot_description" value="$(arg load_robot_description)"/>
+    <arg name="robot_description" value="$(arg robot_description)"/>
+    <arg name="transmission_hw_interface" value="$(arg transmission_hw_interface)"/>
+    <arg name="limited" value="$(arg limited)"/>
+  </include>
+  <!-- Convert joint states to /tf tranforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <node pkg="tf" type="static_transform_publisher" name="tfdummy" args="0 0 0 0 0 0 /world /table 10" />
+  <!-- End maybe remove -->
 
   <!-- Load hardware interface -->
   <node name="ur_hardware_interface" pkg="ur_modern_driver" type="ur_driver" output="log" launch-prefix="$(arg launch_prefix)">
