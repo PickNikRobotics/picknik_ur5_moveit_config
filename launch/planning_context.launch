@@ -1,15 +1,22 @@
 <launch>
   <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
   <arg name="load_robot_description" default="false"/>
-  <arg name="limited" default="false"/>
+  <arg name="limited" default="false" doc="If true, limits joint range [-PI, PI] on all joints." />
 
   <!-- The name of the parameter under which the URDF is loaded -->
   <arg name="robot_description" default="robot_description"/>
 
+  <!-- Config robot description -->
+  <arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface" />
+  <arg name="kinematics_config" default="$(find ur_description)/config/ur5_default.yaml"/>
   <!-- Load universal robot description format (URDF) -->
   <group if="$(arg load_robot_description)">
-    <param unless="$(arg limited)" name="$(arg robot_description)" command="$(find xacro)/xacro --inorder '$(find picknik_ur5_moveit_config)/urdf/ur5_on_table.urdf.xacro'" />
-    <param if="$(arg limited)" name="$(arg robot_description)" command="$(find xacro)/xacro --inorder '$(find picknik_ur5_moveit_config)/urdf/ur5_on_table_joint_limited.urdf.xacro'" />
+    <param unless="$(arg limited)" name="$(arg robot_description)" command="$(find xacro)/xacro --inorder '$(find picknik_ur5_moveit_config)/urdf/ur5_on_table.urdf.xacro'
+      transmission_hw_interface:=$(arg transmission_hw_interface)
+      kinematics_config:=$(arg kinematics_config)" />
+    <param if="$(arg limited)" name="$(arg robot_description)" command="$(find xacro)/xacro --inorder '$(find picknik_ur5_moveit_config)/urdf/ur5_on_table_joint_limited.urdf.xacro'
+      transmission_hw_interface:=$(arg transmission_hw_interface)
+      kinematics_config:=$(arg kinematics_config)" />
   </group>
 
   <!-- The semantic description that corresponds to the URDF -->
