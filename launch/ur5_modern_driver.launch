@@ -16,8 +16,8 @@
   <arg name="base_frame" default="$(arg prefix)base" />
   <arg name="tool_frame" default="$(arg prefix)tool0_controller" />
   <arg name="shutdown_on_disconnect" default="true" />
-  <arg name="controllers" default="joint_state_controller force_torque_sensor_controller vel_based_pos_traj_controller"/>
-  <arg name="stopped_controllers" default="pos_based_pos_traj_controller joint_group_vel_controller"/>
+  <arg name="controllers" default="joint_state_controller force_torque_sensor_controller pos_based_pos_traj_controller"/>
+  <arg name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller"/>
 
   <!-- Maybe remove -->
   <arg name="kinematics_config" default="$(find picknik_ur5_moveit_config)/config/ur5_calibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>

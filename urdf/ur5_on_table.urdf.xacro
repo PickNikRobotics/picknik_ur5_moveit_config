@@ -16,6 +16,7 @@
     transmission_hw_interface="$(arg transmission_hw_interface)"
     kinematics_file="${load_yaml('$(arg kinematics_config)')}"/>
 
+
   <link name="table">
     <visual>
       <geometry>
@@ -31,6 +32,12 @@
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
 
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "table" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
   <!-- Robotiq -->
   <!-- <xacro:include filename="$(find robotiq_2f_model)/model/robotiq_2f_85.urdf.xacro" /> -->
 

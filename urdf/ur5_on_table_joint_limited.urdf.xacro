@@ -37,6 +37,13 @@
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
 
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "table" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
   <!-- Robotiq -->
   <!-- <xacro:include filename="$(find robotiq_2f_model)/model/robotiq_2f_85.urdf.xacro" /> -->
 
@@ -61,5 +68,6 @@
     <!-- <child link="tool_link"/> -->
     <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
   <!-- </joint> -->
+
 
 </robot>
