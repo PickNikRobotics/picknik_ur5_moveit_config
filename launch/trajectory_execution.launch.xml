@@ -10,6 +10,11 @@
   <arg unless="$(arg fake_execution)" name="hardware_controller" default="ur5_oem" doc="if fake_execution:=false, this should either be 'ur5_oem' or 'ur5_modern'"/>
   <arg unless="$(arg fake_execution)" name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
 
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="started_controllers" default="scaled_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="stopped_controllers" default="pos_traj_controller"        doc="position trajectory controllers that are initally loaded, but not started."/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_modern')" name="started_controllers" default="pos_based_pos_traj_controller" doc="position trajectory controllers that are loaded and started"/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_modern')" name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller" doc="position trajectory controllers that are initally loaded, but not started."/>
+
   <!-- Flag indicating whether MoveIt! is allowed to load/unload  or switch controllers -->
   <param name="moveit_manage_controllers" value="$(arg moveit_manage_controllers)"/>
 
@@ -22,8 +27,10 @@
 
   <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
   <include file="$(find picknik_ur5_moveit_config)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml" >
-    <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
     <arg unless="$(arg fake_execution)" name="robot_ip" value="$(arg robot_ip)"/>
+    <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
+    <arg unless="$(arg fake_execution)" name="started_controllers" value="$(arg started_controllers)"/>
+    <arg unless="$(arg fake_execution)" name="stopped_controllers" value="$(arg stopped_controllers)"/>
   </include>
 
 </launch>

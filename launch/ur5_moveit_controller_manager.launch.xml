@@ -1,6 +1,10 @@
 <launch>
   <arg name="hardware_controller" default="ur5_oem" doc="This should either be 'ur5_oem' or 'ur5_modern'"/>
   <arg name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
+  <arg if="$(eval arg('hardware_controller') == 'ur5_oem')" name="started_controllers" default="scaled_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
+  <arg if="$(eval arg('hardware_controller') == 'ur5_oem')" name="stopped_controllers" default="pos_traj_controller"        doc="position trajectory controllers that are initally loaded, but not started."/>
+  <arg if="$(eval arg('hardware_controller') == 'ur5_modern')" name="started_controllers" default="pos_based_pos_traj_controller" doc="position trajectory controllers that are loaded and started"/>
+  <arg if="$(eval arg('hardware_controller') == 'ur5_modern')" name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller" doc="position trajectory controllers that are initally loaded, but not started."/>
 
   <rosparam file="$(find picknik_ur5_moveit_config)/config/controllers.yaml"/>
   <param name="use_controller_manager" value="false"/>
@@ -9,5 +13,7 @@
 
   <include file="$(find picknik_ur5_moveit_config)/launch/$(arg hardware_controller)_driver_bringup.launch.xml" >
     <arg name="robot_ip" value="$(arg robot_ip)"/>
+    <arg name="started_controllers" value="$(arg started_controllers)"/>
+    <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
   </include>
 </launch>

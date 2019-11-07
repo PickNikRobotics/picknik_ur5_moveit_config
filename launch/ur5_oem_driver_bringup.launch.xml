@@ -3,8 +3,10 @@
   <arg name="use_tool_communication" default="false" doc="On e-Series robots tool communication can be enabled with this argument"/>
   <arg name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
   <arg name="tf_prefix" default="" doc="tf_prefix used for the robot."/>
-  <arg name="controllers" default="joint_state_controller scaled_pos_traj_controller speed_scaling_state_controller force_torque_sensor_controller" doc="Controllers that are activated by default."/>
-  <arg name="stopped_controllers" default="pos_traj_controller" doc="Controllers that are initally loaded, but not started."/>
+
+  <arg name="started_controllers" default="scaled_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
+  <arg name="stopped_controllers" default="pos_traj_controller"        doc="position trajectory controllers that are initally loaded, but not started" />
+  <arg name="controllers" default="$(arg started_controllers) joint_state_controller speed_scaling_state_controller force_torque_sensor_controller" doc="Controllers that are activated by default."/>
   <arg name="controller_config_file" default="$(find ur_robot_driver)/config/ur5_controllers.yaml" doc="Config file used for defining the ROS-Control controllers."/>
   <arg name="headless_mode" default="false" doc="Automatically send URScript to robot to execute. On e-Series this does require the robot to be in 'remote-control' mode. With this, the URCap is not needed on the robot."/>
   <arg name="kinematics_config" default="$(find picknik_ur5_moveit_config)/config/ur5_calibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>

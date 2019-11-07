@@ -16,8 +16,10 @@
   <arg name="base_frame" default="$(arg prefix)base" />
   <arg name="tool_frame" default="$(arg prefix)tool0_controller" />
   <arg name="shutdown_on_disconnect" default="true" />
-  <arg name="controllers" default="joint_state_controller force_torque_sensor_controller pos_based_pos_traj_controller"/>
-  <arg name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller"/>
+
+  <arg name="started_controllers" default="pos_based_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
+  <arg name="controllers" default="$(arg started_controllers) joint_state_controller force_torque_sensor_controller"/>
+  <arg name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller" doc="position trajectory controllers that are initally loaded, but not started" />
 
   <!-- Load hardware interface -->
   <node name="ur_hardware_interface" pkg="ur_modern_driver" type="ur_driver" output="log" launch-prefix="$(arg launch_prefix)">

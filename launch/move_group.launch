@@ -21,6 +21,11 @@
   <arg unless="$(arg fake_execution)" name="hardware_controller" default="ur5_oem" doc="if fake_execution:=false, this should either be 'ur5_oem' or 'ur5_modern'"/>
   <arg unless="$(arg fake_execution)" name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
 
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="started_controllers" default="scaled_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="stopped_controllers" default="pos_traj_controller"        doc="position trajectory controllers that are initally loaded, but not started."/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_modern')" name="started_controllers" default="pos_based_pos_traj_controller" doc="position trajectory controllers that are loaded and started"/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_modern')" name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller" doc="position trajectory controllers that are initally loaded, but not started."/>
+
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
@@ -53,6 +58,8 @@
     <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
     <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
     <arg unless="$(arg fake_execution)" name="robot_ip" value="$(arg robot_ip)"/>
+    <arg unless="$(arg fake_execution)" name="started_controllers" value="$(arg started_controllers)"/>
+    <arg unless="$(arg fake_execution)" name="stopped_controllers" value="$(arg stopped_controllers)"/>
   </include>
 
   <!-- Sensors Functionality -->
