@@ -1,9 +1,10 @@
 <launch>
-  <arg name="sim" default="false" />
+  <arg name="sim" default="false" doc="set to false to run on hardware"/>
   <arg name="limited" default="false"/>
   <arg name="debug" default="false" />
 
   <arg name="controller_name" default="scaled_pos_traj_controller"/>
+
   <!-- Remap follow_joint_trajectory -->
   <remap if="$(arg sim)" from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
   <remap unless="$(arg sim)" from="/follow_joint_trajectory" to="/$(arg controller_name)/follow_joint_trajectory"/>

@@ -1,5 +1,25 @@
 <launch>
-  <arg name="limited" default="false"/>
+  <!-- For Planning Context -->
+  <arg name="kinematics_config" default="$(find picknik_ur5_moveit_config)/config/ur5_calibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>
+  <arg name="robot_description_file" default="$(find picknik_ur5_moveit_config)/launch/planning_context.launch" doc="Robot description launch file."/>
+  <arg name="robot_description" default="robot_description"/>
+  <arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface" />
+  <arg name="limited" default="true" doc="Use the description in limited mode (Every axis rotates from -PI to PI)"/>
+  <arg name="load_robot_description" default="false" />
+
+  <!-- move_group settings -->
+  <arg name="pipeline" default="ompl" />
+  <arg name="allow_trajectory_execution" default="true"/>
+  <arg name="fake_execution" default="false"/>
+  <arg name="max_safe_path_cost" default="1"/>
+  <arg name="jiggle_fraction" default="0.05" />
+  <arg name="publish_monitored_planning_scene" default="true"/>
+
+  <!-- Trajectory execution params -->
+  <arg     if="$(arg fake_execution)" name="moveit_controller_manager" default="fake"/>
+  <arg unless="$(arg fake_execution)" name="moveit_controller_manager" default="ur5" />
+  <arg unless="$(arg fake_execution)" name="hardware_controller" default="ur5_oem" doc="if fake_execution:=false, this should either be 'ur5_oem' or 'ur5_modern'"/>
+  <arg unless="$(arg fake_execution)" name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
 
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
@@ -12,19 +32,13 @@
   <arg unless="$(arg info)" name="command_args" value="" />
   <arg     if="$(arg info)" name="command_args" value="--debug" />
 
-  <!-- move_group settings -->
-  <arg name="pipeline" default="ompl" />
-  <arg name="allow_trajectory_execution" default="true"/>
-  <arg name="fake_execution" default="false"/>
-  <arg name="max_safe_path_cost" default="1"/>
-  <arg name="jiggle_fraction" default="0.05" />
-  <arg name="publish_monitored_planning_scene" default="true"/>
-
-  <arg name="load_robot_description" default="false" />
   <!-- load URDF, SRDF and joint_limits configuration -->
   <include file="$(find picknik_ur5_moveit_config)/launch/planning_context.launch">
     <arg name="load_robot_description" value="$(arg load_robot_description)" />
     <arg name="limited" value="$(arg limited)" />
+    <arg name="kinematics_config" value="$(arg kinematics_config)"/>
+    <arg name="robot_description" value="$(arg robot_description)"/>
+    <arg name="transmission_hw_interface" value="$(arg transmission_hw_interface)"/>
   </include>
 
   <!-- Planning Functionality -->
@@ -34,9 +48,11 @@
 
   <!-- Trajectory Execution Functionality -->
   <include ns="move_group" file="$(find picknik_ur5_moveit_config)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
+    <arg name="fake_execution" value="$(arg fake_execution)"/>
     <arg name="moveit_manage_controllers" value="true" />
-    <arg name="moveit_controller_manager" value="ur5" unless="$(arg fake_execution)"/>
-    <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
+    <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
+    <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
+    <arg unless="$(arg fake_execution)" name="robot_ip" value="$(arg robot_ip)"/>
   </include>
 
   <!-- Sensors Functionality -->

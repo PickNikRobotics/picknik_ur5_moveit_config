@@ -9,6 +9,7 @@
   <!-- Config robot description -->
   <arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface" />
   <arg name="kinematics_config" default="$(find ur_description)/config/ur5_default.yaml"/>
+
   <!-- Load universal robot description format (URDF) -->
   <group if="$(arg load_robot_description)">
     <param unless="$(arg limited)" name="$(arg robot_description)" command="$(find xacro)/xacro --inorder '$(find picknik_ur5_moveit_config)/urdf/ur5_on_table.urdf.xacro'

@@ -1,6 +1,13 @@
 <launch>
+  <arg name="hardware_controller" default="ur5_oem" doc="This should either be 'ur5_oem' or 'ur5_modern'"/>
+  <arg name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
+
   <rosparam file="$(find picknik_ur5_moveit_config)/config/controllers.yaml"/>
   <param name="use_controller_manager" value="false"/>
   <param name="trajectory_execution/execution_duration_monitoring" value="false"/>
   <param name="moveit_controller_manager" value="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
+
+  <include file="$(find picknik_ur5_moveit_config)/launch/$(arg hardware_controller)_driver_bringup.launch.xml" >
+    <arg name="robot_ip" value="$(arg robot_ip)"/>
+  </include>
 </launch>
