@@ -54,8 +54,8 @@
   <!-- Trajectory Execution Functionality -->
   <include ns="move_group" file="$(find picknik_ur5_moveit_config)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
     <arg name="fake_execution" value="$(arg fake_execution)"/>
-    <arg name="moveit_manage_controllers" value="true" />
     <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
+    <arg name="moveit_manage_controllers" value="$(arg fake_execution)" />
     <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
     <arg unless="$(arg fake_execution)" name="robot_ip" value="$(arg robot_ip)"/>
     <arg unless="$(arg fake_execution)" name="started_controllers" value="$(arg started_controllers)"/>
