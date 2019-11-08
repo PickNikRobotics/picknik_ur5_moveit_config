@@ -38,29 +38,5 @@
     <child link = "table" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
-  <!-- Robotiq -->
-  <!-- <xacro:include filename="$(find robotiq_2f_model)/model/robotiq_2f_85.urdf.xacro" /> -->
-
-  <!-- <xacro:robotiq_2f_85  name="robotiq_2f_85" parent="tool0"> -->
-    <!-- <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" /> -->
-  <!-- </xacro:robotiq_2f_85> -->
-
-  <!-- <link name="tool_link"> -->
-    <!-- <visual> -->
-      <!-- <origin xyz="0 0 0.025"/> -->
-      <!-- <geometry> -->
-        <!-- <cylinder length="0.05" radius="0.06"/> -->
-      <!-- </geometry> -->
-      <!-- <material name="green"> -->
-        <!-- <color rgba="0 1 0 1"/> -->
-      <!-- </material> -->
-    <!-- </visual> -->
-  <!-- </link> -->
-
-  <!-- <joint name="$tool_link_joint" type="fixed"> -->
-    <!-- <parent link="tool0"/> -->
-    <!-- <child link="tool_link"/> -->
-    <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
-  <!-- </joint> -->
 
 </robot>
