@@ -27,6 +27,7 @@
 
   <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
   <include file="$(find picknik_ur5_moveit_config)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml" >
+    <arg unless="$(arg fake_execution)" name="parameter_ns" value="move_group"/>
     <arg unless="$(arg fake_execution)" name="robot_ip" value="$(arg robot_ip)"/>
     <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
     <arg unless="$(arg fake_execution)" name="started_controllers" value="$(arg started_controllers)"/>
