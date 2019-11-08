@@ -5,11 +5,21 @@
 
   <!-- By default, we do not start a database (it can be large) -->
   <arg name="db" default="false" />
-  <!-- Allow user to specify database location -->
-  <arg name="db_path" default="$(find picknik_ur5_moveit_config)/default_warehouse_mongo_db" />
 
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
+
+  <!-- Trajectory execution params -->
+  <arg name="fake_execution" default="true" doc="set to false to run on hardware"/>
+  <arg     if="$(arg fake_execution)" name="moveit_controller_manager" value="fake"/>
+  <arg unless="$(arg fake_execution)" name="moveit_controller_manager" value="ur5" />
+  <arg unless="$(arg fake_execution)" name="robot_ip" default="10.0.1.148" doc="IP address by which the robot can be reached."/>
+
+  <arg unless="$(arg fake_execution)" name="hardware_controller" default="ur5_oem" doc="if fake_execution:=false, this should either be 'ur5_oem' or 'ur5_modern'"/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="started_controllers" default="scaled_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="stopped_controllers" default="pos_traj_controller"        doc="position trajectory controllers that are initally loaded, but not started."/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_modern')" name="started_controllers" default="pos_based_pos_traj_controller" doc="position trajectory controllers that are loaded and started"/>
+  <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_modern')" name="stopped_controllers" default="vel_based_pos_traj_controller joint_group_vel_controller" doc="position trajectory controllers that are initally loaded, but not started."/>
 
   <!--
   By default, hide joint_state_publisher's GUI
@@ -22,42 +32,63 @@
   <arg name="use_gui" default="false" />
 
   <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
-  <include file="$(find picknik_ur5_moveit_config)/launch/planning_context.launch">
+  <arg name="kinematics_config" default="$(find picknik_ur5_moveit_config)/config/ur5_calibration.yaml" doc="Kinematics config file used for calibration correction. This will be used to verify the robot's calibration is matching the robot_description."/>
+  <arg name="robot_description_file" default="$(find picknik_ur5_moveit_config)/launch/planning_context.launch" doc="Robot description launch file."/>
+  <arg name="robot_description" default="robot_description"/>
+  <arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface" />
+  <arg name="limited" default="true" doc="Use the description in limited mode (Every axis rotates from -PI to PI)"/>
+
+  <!-- robot model -->
+  <include file="$(arg robot_description_file)">
+    <arg name="kinematics_config" value="$(arg kinematics_config)"/>
     <arg name="load_robot_description" value="true"/>
+    <arg name="robot_description" value="$(arg robot_description)"/>
+    <arg name="transmission_hw_interface" value="$(arg transmission_hw_interface)"/>
+    <arg name="limited" value="$(arg limited)"/>
   </include>
 
-  <!-- If needed, broadcast static tf for robot root -->
-
+  <!-- Remap follow_joint_trajectory -->
+  <remap unless="$(arg fake_execution)" from="/follow_joint_trajectory" to="/$(arg started_controllers)/follow_joint_trajectory"/>
 
   <!-- We do not have a robot connected, so publish fake joint states -->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  <node if="$(arg fake_execution)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="use_gui" value="$(arg use_gui)"/>
-    <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+    <rosparam param="source_list">[/move_group/fake_controller_joint_states]</rosparam>
   </node>
 
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
-  <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
   <include file="$(find picknik_ur5_moveit_config)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>
-    <arg name="fake_execution" value="true"/>
+    <arg name="fake_execution" value="$(arg fake_execution)"/>
+    <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)"/>
+    <arg unless="$(arg fake_execution)" name="hardware_controller" value="$(arg hardware_controller)" />
+    <arg unless="$(arg fake_execution)" name="robot_ip" value="$(arg robot_ip)"/>
+    <arg unless="$(arg fake_execution)" name="started_controllers" value="$(arg started_controllers)"/>
+    <arg unless="$(arg fake_execution)" name="stopped_controllers" value="$(arg stopped_controllers)"/>
     <arg name="info" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
     <arg name="pipeline" value="$(arg pipeline)"/>
+    <!-- Planning context params -->
+    <arg name="kinematics_config" value="$(arg kinematics_config)"/>
+    <arg name="load_robot_description" value="true"/>
+    <arg name="robot_description" value="$(arg robot_description)"/>
+    <arg name="transmission_hw_interface" value="$(arg transmission_hw_interface)"/>
+    <arg name="limited" value="$(arg limited)"/>
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
   <include file="$(find picknik_ur5_moveit_config)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find picknik_ur5_moveit_config)/launch/moveit.rviz"/>
+    <arg name="config" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
-  <!-- If database loading was enabled, start mongodb as well -->
-  <include file="$(find picknik_ur5_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)">
-    <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
-  </include>
+  <!-- If needed, broadcast static tf for robot root -->
+  <node pkg="tf" type="static_transform_publisher" name="$(anon tfdummy)" args="0 0 0 0 0 0 /world /table 10" />
 
-  <node pkg="tf" type="static_transform_publisher" name="tfdummy" args="0 0 0 0 0 0 /world /table 10" />
+  <!-- If database loading was enabled, start mongodb as well -->
+  <include file="$(find picknik_ur5_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)"/>
 
 </launch>

@@ -10,32 +10,18 @@
   <!-- ur5 -->
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
 
-  <!-- arm joint limited -->
+  <!-- arm -->
   <xacro:arg name="kinematics_config" default="$(find ur_description)/config/ur5_default.yaml"/>
   <xacro:ur5_robot prefix="" joint_limited="false"
     transmission_hw_interface="$(arg transmission_hw_interface)"
-    kinematics_file="${load_yaml('$(arg kinematics_config)')}"/>
-
-
-  <link name="table">
-    <visual>
-      <geometry>
-        <box size="1.25 1.25 0.25"/>
-      </geometry>
-        <origin rpy="0 0 0.0" xyz="0.0 0 -0.125"/>
-    </visual>
-  </link>
-
-  <joint name="table_joint" type="fixed">
-    <parent link="table" />
-    <child link = "base_link" />
-    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-  </joint>
+    kinematics_file="${load_yaml('$(arg kinematics_config)')}"
+  />
 
   <link name="world" />
+
   <joint name="world_joint" type="fixed">
     <parent link="world" />
-    <child link = "table" />
+    <child link = "base_link" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
 

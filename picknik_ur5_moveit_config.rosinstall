@@ -1,0 +1,53 @@
+# UR dependencies
+- git:
+    local-name: ur/universal_robot
+    uri: https://github.com/fmauch/universal_robot.git
+    version: calibration_devel
+- git:
+    local-name: ur/universal_robots_ros_driver
+    uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver
+    version: master
+
+# The ur_modern_driver is not officially supported with melodic. @miguelprada has a fork with a ur-e branch.
+# This should be re-incorporated once melodic is officially supported.
+# - git:
+    # local-name: ur/ur_modern_driver
+    # uri: https://github.com/ros-industrial/ur_modern_driver.git
+    # version: kinetic-devel
+
+# Sim Controller
+# TODO: The sim controller should be used instead of the fake controller
+# - git:
+    # local-name: moveit/ros_control_boilerplate
+    # uri: git@github.com:PickNikRobotics/ros_control_boilerplate.git
+    # version: 0.4.1
+# - git:
+    # uri: https://github.com/PickNikRobotics/moveit_sim_controller.git
+    # local-name: moveit/moveit_sim_controller
+    # version: melodic-devel
+
+# MoveIt and it's dependencies
+- git:
+    uri: https://github.com/ros-planning/moveit.git
+    local-name: moveit/moveit
+    version: master
+
+- git:
+    uri: https://github.com/ros-planning/geometric_shapes.git
+    local-name: moveit/geometric_shapes
+    version: melodic-devel
+
+- git:
+    uri: https://github.com/ros-planning/moveit_msgs
+    local-name: moveit/moveit_msgs
+    version: master
+
+- git:
+    uri: https://github.com/ros-planning/moveit_visual_tools.git
+    local-name: moveit/moveit_visual_tools
+    version: master
+
+- git:
+    uri: https://github.com/PickNikRobotics/rviz_visual_tools.git
+    local-name: moveit/rviz_visual_tools
+    version: master
