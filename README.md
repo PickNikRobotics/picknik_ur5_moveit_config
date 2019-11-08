@@ -26,17 +26,17 @@ The [ur5_examples](https://github.com/PickNikRobotics/ur5_examples) repo has exa
 ## demo.launch
 This is the primary launch file that uses other launch files to start the example.
 
-### Simulation rosgraph (fake_execution:=true)
+### Simulation rosgraph
 
 ![Simulation Nodes](/doc/rosgraph_nodes_demo_simulation.svg)
 ![Simulation Nodes/Topics](/doc/rosgraph_topics_demo_simulation.svg)
 
-### OEM UR Driver (fake_execution:=true hardware_controller:=ur5_oem)
+### OEM UR Driver
 
 ![OEM UR Nodes](/doc/rosgraph_nodes_demo_oem.svg)
 ![OEM UR Nodes/Topics](/doc/rosgraph_topics_demo_oem.svg)
 
-### UR Modern Driver (fake_execution:=false hardware_controller:=ur5_modern)
+### UR Modern Driver
 
 TODO(tylerjw): Update after demo.launch works with ur_modern driver
 
