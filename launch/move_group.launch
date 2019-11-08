@@ -52,20 +52,25 @@
   </include>
 
   <!-- Trajectory Execution Functionality -->
-  <include unless="$(arg fake_execution)" file="$(find picknik_ur5_moveit_config)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
-    <arg name="fake_execution" value="false"/>
-    <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
-    <arg name="moveit_manage_controllers" value="$(arg fake_execution)" />
-    <arg name="hardware_controller" value="$(arg hardware_controller)" />
-    <arg name="robot_ip" value="$(arg robot_ip)"/>
-    <arg name="started_controllers" value="$(arg started_controllers)"/>
-    <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
-  </include>
-  <include if="$(arg fake_execution)" ns="move_group" file="$(find picknik_ur5_moveit_config)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
-    <arg name="fake_execution" value="$(arg fake_execution)"/>
-    <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
-    <arg name="moveit_manage_controllers" value="$(arg fake_execution)" />
-  </include>
+  <group if="$(arg allow_trajectory_execution)">
+    <include unless="$(arg fake_execution)"
+             file="$(find picknik_ur5_moveit_config)/launch/trajectory_execution.launch.xml" >
+      <arg name="fake_execution" value="false"/>
+      <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
+      <arg name="moveit_manage_controllers" value="$(arg fake_execution)" />
+      <arg name="hardware_controller" value="$(arg hardware_controller)" />
+      <arg name="robot_ip" value="$(arg robot_ip)"/>
+      <arg name="started_controllers" value="$(arg started_controllers)"/>
+      <arg name="stopped_controllers" value="$(arg stopped_controllers)"/>
+    </include>
+
+    <include if="$(arg fake_execution)" ns="move_group"
+             file="$(find picknik_ur5_moveit_config)/launch/trajectory_execution.launch.xml">
+      <arg name="fake_execution" value="true"/>
+      <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
+      <arg name="moveit_manage_controllers" value="$(arg fake_execution)" />
+    </include>
+  </group>
 
   <!-- Sensors Functionality -->
   <include ns="move_group" file="$(find picknik_ur5_moveit_config)/launch/sensor_manager.launch.xml" if="$(arg allow_trajectory_execution)">
