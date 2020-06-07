@@ -26,7 +26,7 @@
     # local-name: moveit/moveit_sim_controller
     # version: melodic-devel
 
-# MoveIt and it's dependencies
+# MoveIt and its dependencies
 - git:
     uri: https://github.com/ros-planning/moveit.git
     local-name: moveit/moveit
