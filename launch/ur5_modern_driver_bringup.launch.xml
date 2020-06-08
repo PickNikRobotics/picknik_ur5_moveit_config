@@ -6,8 +6,8 @@
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
 
-  <arg name="robot_ip" default="10.0.1.148" doc="IP of the controller" />
-  <arg name="reverse_ip" default="10.0.1.118" doc="IP of the computer running the driver" />
+  <arg name="robot_ip" default="10.1.22.162" doc="IP of the controller" />
+  <arg name="reverse_ip" default="10.1.22.183" doc="IP of the computer running the driver" />
   <arg name="reverse_port" default="50001"/>
   <arg name="min_payload"  default="0.0"/>
   <arg name="max_payload"  default="3.0"/>
