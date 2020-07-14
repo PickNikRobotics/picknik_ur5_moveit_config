@@ -1,5 +1,9 @@
 # UR dependencies
 - git:
+    local-name: robotiq_85_gripper
+    uri: https://github.com/bostoncleek/robotiq_85_gripper.git
+    version: master
+- git:
     local-name: ur/universal_robot
     uri: https://github.com/fmauch/universal_robot.git
     version: calibration_devel

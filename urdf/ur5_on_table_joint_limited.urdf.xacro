@@ -22,13 +22,29 @@
     transmission_hw_interface="$(arg transmission_hw_interface)"
     kinematics_file="${load_yaml('$(arg kinematics_config)')}"/>
 
-  <link name="table">
+
+  <link name="world" />
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "base_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+
+
+  <!-- <link name="table">
     <visual>
       <geometry>
         <box size="1.25 1.25 0.25"/>
       </geometry>
         <origin rpy="0 0 0.0" xyz="0.0 0 -0.125"/>
     </visual>
+    <collision>
+      <geometry>
+        <box size="1.25 1.25 0.25"/>
+      </geometry>
+    </collision>
   </link>
 
   <joint name="table_joint" type="fixed">
@@ -42,6 +58,20 @@
     <parent link="world" />
     <child link = "table" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-  </joint>
+  </joint> -->
+
+
+  <!-- Tool changer -->
+    <xacro:include filename="$(find robotiq_85_description)/urdf/tool_changer.xacro" />
+    <xacro:tool_changer prefix="" connected_to="tool0"/>
+
+
+  <!-- GRIPPER -->
+  <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+
+  <xacro:robotiq_85_gripper prefix="" parent="tool_changer_tool0" >
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 -1.57 0.0"/>
+  </xacro:robotiq_85_gripper>
+
 
 </robot>

@@ -79,6 +79,26 @@
     <arg name="limited" value="$(arg limited)"/>
   </include>
 
+  <!-- Robotiq 85 driver -->
+  <group unless="$(arg fake_execution)">
+    <arg name="comport" default="/dev/ttyUSB0"/>
+    <arg name="baud" default="115200"/>
+    <arg name="run_test" default="false"/>
+    <arg name="prefix" default=""/>
+
+    <node pkg="robotiq_85_driver" type="robotiq_85_driver" name="robotiq_85_driver" respawn="true" output="screen">
+      <param name="num_grippers" value="1" />
+      <param name="comport" value="$(arg comport)" />
+      <param name="baud" value="$(arg baud)" />
+      <param name="prefix" value="$(arg prefix)" />
+    </node>
+
+    <!-- <include file="$(find robotiq_85_gazebo)/launch/controller_utils.launch"/>
+    <rosparam file="$(find robotiq_85_gazebo)/controller/gripper_controller_robotiq.yaml" command="load"/>
+    <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper" /> -->
+
+  </group>
+
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
   <include file="$(find picknik_ur5_moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
