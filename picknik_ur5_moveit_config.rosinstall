@@ -8,7 +8,7 @@
 - git:
     local-name: ur/universal_robots_ros_driver
     uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver
-    version: 117323d
+    version: master
 
 # The ur_modern_driver is not officially supported with melodic. @miguelprada has a fork with a ur-e branch.
 # This should be re-incorporated once melodic is officially supported.

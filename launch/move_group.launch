@@ -19,7 +19,7 @@
   <arg     if="$(arg fake_execution)" name="moveit_controller_manager" default="fake"/>
   <arg unless="$(arg fake_execution)" name="moveit_controller_manager" default="ur5" />
   <arg unless="$(arg fake_execution)" name="hardware_controller" default="ur5_oem" doc="if fake_execution:=false, this should either be 'ur5_oem' or 'ur5_modern'"/>
-  <arg unless="$(arg fake_execution)" name="robot_ip" default="10.1.22.162" doc="IP address by which the robot can be reached."/>
+  <arg unless="$(arg fake_execution)" name="robot_ip" default="10.0.1.249" doc="IP address by which the robot can be reached."/>
 
   <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="started_controllers" default="scaled_pos_traj_controller" doc="position trajectory controllers that are loaded and started" />
   <arg if="$(eval not arg('fake_execution') and arg('hardware_controller') == 'ur5_oem')" name="stopped_controllers" default="pos_traj_controller"        doc="position trajectory controllers that are initally loaded, but not started."/>
