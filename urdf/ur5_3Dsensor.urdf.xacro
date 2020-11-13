@@ -6,6 +6,7 @@
 
   <!-- common stuff -->
   <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+  <include filename="$(find picknik_ur5_moveit_config)/urdf/ur5_sensor.gazebo" />
 
   <!-- ur5 -->
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
@@ -48,12 +49,28 @@
   </link>
 
   <joint type="fixed" name="hokuyo_joint">
-    <origin xyz="0.15 0 0.1" rpy="0 0 0"/>
+    <origin xyz="0.15 -1 0.1" rpy="0 0 0"/>
     <child link="hokuyo"/>
-    <parent link="base_link"/>
+    <parent link="table"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
     <limit effort="10000" velocity="1000"/>
     <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+
+  <link name="table">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 -0.45 -0.03"/>
+      <geometry>
+        <box size="0.6 1.2 0.05"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+
+  <joint name="table_joint" type="fixed">
+    <parent link="table"/>
+    <child link="base_link"/>
   </joint>
 
 </robot>

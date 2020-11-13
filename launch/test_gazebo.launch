@@ -11,6 +11,8 @@
     <arg name="gui" value="$(arg gui)"/>
   </include>
 
+  <!-- <include filename="$(find picknik_ur5_moveit_config)/urdf/ur5_sensor.gazebo" /> -->
+
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find picknik_ur5_moveit_config)/urdf/ur5_3Dsensor.urdf.xacro' "/>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
