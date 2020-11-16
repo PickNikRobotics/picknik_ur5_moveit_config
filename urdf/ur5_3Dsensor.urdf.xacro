@@ -23,9 +23,9 @@
   <link name="hokuyo">
 
     <visual name='hokuyo_visual'>
-      <origin xyz="0 0 0" rpy=" 0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="$(find picknik_ur5_moveit_config)/meshes/hokuyo.dae"/>
+        <mesh filename="$(find picknik_ur5_moveit_config)/kinect/meshes/kinect.dae"/>
       </geometry>
     </visual>
 
@@ -56,6 +56,17 @@
     <limit effort="10000" velocity="1000"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
+
+  <joint type="fixed" name="sensor_joint">
+    <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+    <child link="sensor"/>
+    <parent link="hokuyo"/>
+    <axis xyz="1 0 0" rpy="0 0 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+  <link name="sensor"/>
 
 
   <link name="table">
